@@ -471,13 +471,3 @@ https://linkedin.com/in/shantanumohod
 
 ---
 
-## Assessment Submission
-
-- ✅ GitHub Repository
-- ✅ Live Frontend
-- ✅ Live Backend
-- ✅ Swagger Documentation
-- ✅ AI_PROMPTS.md
-- ✅ README.md
-- ✅ Cloud Deployment
-- ✅ PostgreSQL Database
