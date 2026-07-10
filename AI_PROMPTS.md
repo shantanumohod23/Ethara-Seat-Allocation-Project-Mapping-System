@@ -1,282 +1,141 @@
-# AI Usage Report
+# AI Tool Usage Report
 
-## Project
-
-**Ethara Seat Allocation & Project Mapping System**
-
-This project was developed using AI-assisted development (OpenAI Codex/ChatGPT) together with manual implementation, debugging, testing, and validation.
-
-AI was used to accelerate development, generate boilerplate code, suggest architecture, and assist in debugging. Every generated component was reviewed, modified where necessary, and verified before being included in the final application.
+This project was developed using AI-assisted development (Cursor, Claude, OpenAI ChatGPT/Codex). AI was used to accelerate planning, implementation, debugging, and documentation. All generated code was manually reviewed, modified where necessary, tested locally, and validated before deployment.
 
 ---
 
-# 1. Project Planning
+# 1. Prompt Used for Planning
 
-### Prompt
+## Prompt
 
-> Analyze the Ethara Seat Allocation & Project Mapping assessment document and propose a scalable full-stack architecture including database design, REST APIs, frontend pages, dashboard metrics, AI assistant behavior, deployment strategy, and documentation.
-
-### AI Output
-
-AI suggested:
-
-- FastAPI backend
-- React + Vite frontend
-- PostgreSQL database
-- SQLAlchemy ORM
-- Alembic migrations
-- Layered architecture
-- REST API design
-- Dashboard layout
-- Seed data strategy
-
-### Manual Validation
-
-- Compared architecture against assessment requirements.
-- Removed unnecessary complexity.
-- Adjusted project structure.
-- Verified all required features were covered.
+> Build the Ethara Seat Allocation & Project Mapping System from the provided assessment document. Identify the required entities, relationships, backend APIs, dashboard metrics, frontend pages, AI assistant capabilities, deployment architecture, documentation requirements, and overall project folder structure. Follow production-ready software engineering practices.
 
 ---
 
-# 2. Database Design
+# 2. Prompt Used for Backend
 
-### Prompt
+## Prompt
 
-> Design a normalized PostgreSQL schema for employees, projects, seats, and seat allocations. Enforce unique employee codes, unique emails, unique seat locations, allocation history, seat availability, reserved seats, and project mapping.
-
-### AI Output
-
-Generated:
-
-- Employees table
-- Projects table
-- Seats table
-- Seat Allocations table
-- Relationships
-- Constraints
-- Index recommendations
-
-### Manual Changes
-
-- Added Occupied seat status.
-- Updated migration files.
-- Verified foreign keys.
-- Verified allocation rules.
+> Generate a FastAPI backend using SQLAlchemy Async ORM, Pydantic models, Alembic migrations, and PostgreSQL. Create REST APIs for Employees, Projects, Seats, Seat Allocations, Dashboard statistics, CSV upload, and an AI assistant endpoint. Follow a layered architecture with routers, services, schemas, and models.
 
 ---
 
-# 3. Backend Development
+# 3. Prompt Used for Database Design
 
-### Prompt
+## Prompt
 
-> Create a production-ready FastAPI backend using SQLAlchemy Async ORM, Pydantic models, service layer, CRUD APIs, dashboard endpoints, CSV upload, and an AI assistant endpoint.
-
-### AI Output
-
-Generated:
-
-- CRUD APIs
-- Schemas
-- Services
-- Routers
-- Validation
-- Dashboard endpoints
-- Assistant endpoint
-
-### Manual Improvements
-
-- Fixed API routing order.
-- Corrected seat allocation logic.
-- Added missing endpoints.
-- Improved error handling.
-- Fixed deployment configuration.
+> Design a normalized PostgreSQL database for employees, projects, seats, and seat allocations. Include proper foreign keys, unique constraints, indexes, seat statuses, project mapping, allocation history, onboarding employees, and business rules preventing duplicate active seat allocations.
 
 ---
 
-# 4. Frontend Development
+# 4. Prompt Used for Frontend
 
-### Prompt
+## Prompt
 
-> Build a React + Vite dashboard matching the assessment requirements with employee management, projects, seats, allocations, analytics, and AI assistant.
-
-### AI Output
-
-Generated:
-
-- Dashboard
-- Employee page
-- Project page
-- Seat page
-- Allocation page
-- AI Assistant page
-
-### Manual Improvements
-
-- Redesigned layouts.
-- Fixed responsive behavior.
-- Connected frontend to backend APIs.
-- Added loading states.
-- Improved forms.
-- Fixed API integration.
+> Build a React + Vite + TypeScript frontend matching the assessment requirements. Create pages for Dashboard, Employees, Projects, Seats, Allocations, and an AI Assistant. Connect all pages with the FastAPI backend using REST APIs and display real-time dashboard metrics.
 
 ---
 
-# 5. AI Assistant
+# 5. Prompt Used for AI Assistant
 
-### Prompt
+## Prompt
 
-> Implement an offline rule-based assistant capable of answering seat allocation and project mapping questions without requiring an external LLM API.
-
-### AI Output
-
-Created a deterministic assistant capable of answering questions such as:
-
-- Where is Employee00001 seated?
-- Which seats are available?
-- Show seats on Floor 3.
-- Which project is an employee assigned to?
-- Floor occupancy.
-- Project utilization.
-
-### Manual Validation
-
-Verified responses using actual database queries.
+> Implement a lightweight rule-based assistant that answers workspace questions without requiring an external LLM. Support queries such as employee seat lookup, available seats, project allocation, floor occupancy, and project utilization.
 
 ---
 
-# 6. Seed Data
+# 6. Prompt Used for Debugging
 
-### Prompt
+## Prompt
 
-> Generate realistic assessment seed data including:
->
-> - 11 Projects
-> - 5 Floors
-> - 5,500 Seats
-> - 5,000 Employees
-> - 4,900 Active Allocations
-> - 500 Available Seats
-> - 100 Reserved Seats
-> - 50 Onboarding Employees
-
-### AI Output
-
-Generated deterministic seed generator.
-
-### Manual Improvements
-
-- Fixed batch insertion.
-- Solved PostgreSQL SSL issues.
-- Reduced transaction failures.
-- Verified dashboard metrics.
+> Review the entire repository for runtime issues, missing dependencies, incorrect API routes, migration problems, PostgreSQL connection issues, frontend integration bugs, deployment errors, CORS configuration, and production environment setup. Suggest fixes while preserving existing functionality.
 
 ---
 
-# 7. Debugging
+# 7. Prompt Used for Deployment
 
-AI assisted with debugging:
+## Prompt
 
-- PostgreSQL authentication
-- Neon database connection
-- Alembic migrations
-- SQLAlchemy configuration
-- Async session handling
-- CORS
-- Render deployment
-- Vercel deployment
-- Environment variables
-- Frontend API configuration
-
-### Manual Fixes
-
-- Updated Render environment variables.
-- Fixed frontend production API URL.
-- Fixed deployment configuration.
-- Corrected routing issues.
-- Validated production deployment.
+> Prepare the application for production deployment. Configure environment variables, PostgreSQL connection, Alembic migrations, Render backend deployment, Vercel frontend deployment, CORS settings, API documentation, README, and deployment verification steps.
 
 ---
 
-# 8. Deployment
+# What AI Generated Correctly
 
-### Prompt
+AI successfully generated:
 
-> Prepare the application for deployment using Render, Vercel, PostgreSQL, Alembic migrations, environment variables, and production settings.
-
-### AI Output
-
-Generated deployment steps.
-
-### Manual Validation
-
-Successfully deployed:
-
-- Backend → Render
-- Frontend → Vercel
-- Database → Neon PostgreSQL
-
-Verified:
-
-- Swagger API
-- Health endpoint
-- Dashboard APIs
-- CRUD operations
-- Production connectivity
+- Overall project architecture
+- FastAPI project structure
+- SQLAlchemy models
+- Pydantic schemas
+- CRUD API endpoints
+- Dashboard API structure
+- React frontend components
+- Initial dashboard layout
+- Seed data generator
+- Swagger/OpenAPI documentation
+- Deployment instructions
+- README documentation
 
 ---
 
-# 9. Manual Verification
+# What AI Generated Incorrectly
 
-The following were manually tested:
+Several generated components required manual correction:
 
-- Employee CRUD
-- Project CRUD
-- Seat allocation
-- Seat release
-- Dashboard statistics
-- CSV upload
-- Employee search
-- Project mapping
-- AI assistant
-- Production deployment
-- REST APIs
-- Swagger documentation
+- PostgreSQL connection configuration required fixes for production.
+- Seat status enum was missing the **Occupied** state.
+- Some API route ordering caused endpoint conflicts.
+- Seed generator produced large transactions that required batching.
+- Frontend API configuration required production URL changes.
+- Render deployment initially failed because of missing dependencies (`psycopg2-binary`).
+- CORS configuration required updates for the deployed frontend.
+- Environment variable configuration required corrections for production.
 
 ---
 
-# Technologies Used
+# What Candidate Manually Fixed
 
-## Backend
+The following work was completed manually:
 
-- FastAPI
-- SQLAlchemy
-- Alembic
-- PostgreSQL
-- Pydantic
-- AsyncIO
-
-## Frontend
-
-- React
-- Vite
-- TypeScript
-- React Query
-- React Router
-- CSS
-
-## Deployment
-
-- Render
-- Vercel
-- Neon PostgreSQL
+- Fixed PostgreSQL authentication and connection issues.
+- Updated Alembic configuration.
+- Corrected database URL handling.
+- Fixed seed data generation and batching.
+- Added missing seat status values.
+- Updated backend API routing.
+- Fixed frontend API integration.
+- Corrected production environment variables.
+- Configured Render deployment.
+- Configured Vercel deployment.
+- Fixed CORS errors between frontend and backend.
+- Verified CRUD operations.
+- Improved README documentation.
+- Improved project structure and deployment readiness.
 
 ---
 
-# AI Usage Declaration
+# How Candidate Verified Correctness
 
-AI was used as a development assistant to accelerate implementation, generate boilerplate code, suggest architecture, and assist with debugging.
+The application was manually verified by:
 
-All generated code was reviewed, modified where required, tested locally, and validated before deployment.
-
-The final application—including debugging, production deployment, API integration, database configuration, and testing—was completed and verified manually by the candidate.
+- Running Alembic migrations successfully.
+- Executing the seed script and confirming:
+  - 11 projects
+  - 5,500 seats
+  - 5,000 employees
+  - 4,900 active allocations
+  - 500 available seats
+  - 100 reserved seats
+  - 50 onboarding employees
+- Testing CRUD APIs using Swagger.
+- Testing employee creation, update, deletion, and search.
+- Testing project management.
+- Testing seat allocation and release.
+- Testing dashboard statistics.
+- Testing AI assistant responses.
+- Testing CSV upload functionality.
+- Deploying the backend to Render.
+- Deploying the frontend to Vercel.
+- Verifying API connectivity between frontend and backend.
+- Confirming successful production deployment.
