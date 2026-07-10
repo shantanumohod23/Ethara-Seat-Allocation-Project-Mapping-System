@@ -1,0 +1,1 @@
+/** Seat TypeScript types. */

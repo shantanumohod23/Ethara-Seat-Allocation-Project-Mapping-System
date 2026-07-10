@@ -1,0 +1,1 @@
+/** Seat API endpoint functions. */
