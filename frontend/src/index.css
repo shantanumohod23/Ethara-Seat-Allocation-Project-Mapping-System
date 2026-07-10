@@ -81,6 +81,19 @@
     background: rgb(14 116 144);
   }
 
+  .secondary-button {
+    background: white;
+    border: 1px solid rgb(203 213 225);
+    border-radius: 6px;
+    color: rgb(51 65 85);
+    font-weight: 700;
+    padding: 0.65rem 1rem;
+  }
+
+  .secondary-button:hover {
+    background: rgb(248 250 252);
+  }
+
   .status-pill {
     background: rgb(236 254 255);
     border-radius: 999px;

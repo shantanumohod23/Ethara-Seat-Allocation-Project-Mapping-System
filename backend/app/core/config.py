@@ -1,9 +1,11 @@
 """Application settings and environment configuration."""
 
 from functools import lru_cache
+import ssl
 
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
+from sqlalchemy.engine import make_url
 
 
 class Settings(BaseSettings):
@@ -49,7 +51,45 @@ class Settings(BaseSettings):
     @property
     def sync_database_url(self) -> str:
         """Alembic requires a synchronous driver."""
-        return self.database_url.replace("+asyncpg", "")
+        url = make_url(self.database_url)
+        if url.drivername == "postgresql+asyncpg":
+            url = url.set(drivername="postgresql")
+        return url.render_as_string(hide_password=False)
+
+    @property
+    def async_database_url(self) -> str:
+        """Return a clean asyncpg connection URL for SQLAlchemy async engine."""
+        url = make_url(self.database_url)
+        if url.drivername == "postgresql":
+            url = url.set(drivername="postgresql+asyncpg")
+
+        if url.drivername != "postgresql+asyncpg":
+            return url.render_as_string(hide_password=False)
+        query = dict(url.query)
+        if "sslmode" in query or "channel_binding" in query:
+            query.pop("sslmode", None)
+            query.pop("channel_binding", None)
+            url = url.set(query=query)
+
+        return url.render_as_string(hide_password=False)
+
+    @property
+    def async_connect_args(self) -> dict[str, object]:
+        """Translate common asyncpg connect arguments from the database URL."""
+        url = make_url(self.database_url)
+        if not url.drivername.startswith("postgresql"):
+            return {}
+
+        connect_args: dict[str, object] = {}
+        sslmode = url.query.get("sslmode")
+        if sslmode:
+            connect_args["ssl"] = (
+                False
+                if sslmode == "disable"
+                else ssl.create_default_context()
+            )
+
+        return connect_args
 
     @property
     def is_development(self) -> bool:

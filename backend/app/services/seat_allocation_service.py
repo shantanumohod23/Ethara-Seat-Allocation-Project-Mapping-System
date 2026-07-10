@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from datetime import UTC, datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import func, select
 from sqlalchemy.exc import IntegrityError
@@ -141,7 +141,7 @@ class SeatAllocationService:
 
         seat = await self._get_seat(allocation.seat_id)
         allocation.status = AllocationStatus.RELEASED
-        allocation.released_at = datetime.now(UTC)
+        allocation.released_at = datetime.now(timezone.utc)
         allocation.notes = notes or allocation.notes
         if seat.status not in {SeatStatus.MAINTENANCE, SeatStatus.RESERVED}:
             seat.status = SeatStatus.AVAILABLE

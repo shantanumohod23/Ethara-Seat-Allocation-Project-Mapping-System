@@ -68,3 +68,21 @@ class EmployeeRead(EmployeeBase):
 
 class EmployeeListResponse(PaginatedResponse[EmployeeRead]):
     """Paginated employee list response."""
+
+
+class EmployeeCsvImportError(BaseModel):
+    """Per-row CSV import failure."""
+
+    row: int
+    employee_code: str | None = None
+    email: str | None = None
+    error: str
+
+
+class EmployeeCsvImportResponse(BaseModel):
+    """Summary returned after importing employee CSV rows."""
+
+    created: int
+    failed: int
+    employees: list[EmployeeRead]
+    errors: list[EmployeeCsvImportError]

@@ -1,13 +1,19 @@
 """Employee route handlers."""
 
+import csv
+from io import StringIO
 from typing import Literal
 
-from fastapi import APIRouter, Query, status
+from fastapi import APIRouter, File, Query, UploadFile, status
+from pydantic import ValidationError
 
 from app.api.deps import EmployeeServiceDep
+from app.core.exceptions import AppException, ConflictError
 from app.models.enums import EmploymentStatus
 from app.schemas.employee import (
     EmployeeCreate,
+    EmployeeCsvImportError,
+    EmployeeCsvImportResponse,
     EmployeeListResponse,
     EmployeeRead,
     EmployeeUpdate,
@@ -20,6 +26,14 @@ from app.services.employee_service import (
 )
 
 router = APIRouter(prefix="/employees", tags=["employees"])
+
+CSV_ALIASES = {
+    "employee_id": "employee_code",
+    "code": "employee_code",
+    "emp_code": "employee_code",
+    "status": "employment_status",
+    "project": "project_id",
+}
 
 
 @router.get(
@@ -129,6 +143,53 @@ async def create_employee(
     return await service.create_employee(payload)
 
 
+@router.post(
+    "/upload-csv",
+    response_model=EmployeeCsvImportResponse,
+    status_code=status.HTTP_201_CREATED,
+    summary="Upload employees CSV",
+    description=(
+        "Import employees from a CSV file. Expected columns include "
+        "employee_code, email, first_name, last_name, joining_date, and optional "
+        "department, job_title, employment_status, project_id."
+    ),
+)
+async def upload_employees_csv(
+    service: EmployeeServiceDep,
+    file: UploadFile = File(...),
+) -> EmployeeCsvImportResponse:
+    """Create employees from an uploaded CSV file."""
+    if not file.filename.lower().endswith(".csv"):
+        raise ConflictError("Upload a .csv file.")
+
+    contents = (await file.read()).decode("utf-8-sig")
+    reader = csv.DictReader(StringIO(contents))
+    employees: list[EmployeeRead] = []
+    errors: list[EmployeeCsvImportError] = []
+
+    for row_number, row in enumerate(reader, start=2):
+        try:
+            normalized = _normalize_csv_row(row)
+            payload = EmployeeCreate.model_validate(normalized)
+            employees.append(await service.create_employee(payload))
+        except (ValidationError, AppException, ValueError) as exc:
+            errors.append(
+                EmployeeCsvImportError(
+                    row=row_number,
+                    employee_code=(row.get("employee_code") or row.get("employee_id")),
+                    email=row.get("email"),
+                    error=str(exc),
+                ),
+            )
+
+    return EmployeeCsvImportResponse(
+        created=len(employees),
+        failed=len(errors),
+        employees=employees,
+        errors=errors,
+    )
+
+
 @router.put(
     "/{employee_id}",
     response_model=EmployeeRead,
@@ -168,3 +229,21 @@ async def delete_employee(
 ) -> None:
     """Deactivate an employee (soft delete)."""
     await service.delete_employee(employee_id)
+
+
+def _normalize_csv_row(row: dict[str, str | None]) -> dict:
+    normalized: dict = {}
+    for key, value in row.items():
+        if key is None:
+            continue
+        normalized_key = CSV_ALIASES.get(key.strip().lower(), key.strip().lower())
+        normalized_value = value.strip() if isinstance(value, str) else value
+        if normalized_value == "":
+            normalized_value = None
+        normalized[normalized_key] = normalized_value
+
+    project_id = normalized.get("project_id")
+    if project_id is not None:
+        normalized["project_id"] = int(project_id)
+
+    return normalized

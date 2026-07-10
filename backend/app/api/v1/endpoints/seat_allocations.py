@@ -16,6 +16,7 @@ from app.services.seat_allocation_service import (
 )
 
 router = APIRouter(prefix="/seats", tags=["seat allocations"])
+alias_router = APIRouter(tags=["seat allocations"])
 
 
 @router.post(
@@ -31,12 +32,42 @@ async def allocate_seat(
     return await service.allocate(payload)
 
 
+@alias_router.post(
+    "/allocate",
+    response_model=SeatAllocationRead,
+    status_code=status.HTTP_201_CREATED,
+    summary="Allocate seat",
+)
+async def allocate_seat_alias(
+    payload: SeatAllocationCreate,
+    service: SeatAllocationServiceDep,
+) -> SeatAllocationRead:
+    return await service.allocate(payload)
+
+
 @router.post(
     "/release",
     response_model=SeatAllocationRead,
     summary="Release seat",
 )
 async def release_seat_by_body(
+    payload: SeatAllocationRelease,
+    service: SeatAllocationServiceDep,
+) -> SeatAllocationRead:
+    return await service.release_matching(
+        allocation_id=payload.allocation_id,
+        employee_id=payload.employee_id,
+        seat_id=payload.seat_id,
+        notes=payload.notes,
+    )
+
+
+@alias_router.post(
+    "/release",
+    response_model=SeatAllocationRead,
+    summary="Release seat",
+)
+async def release_seat_by_body_alias(
     payload: SeatAllocationRelease,
     service: SeatAllocationServiceDep,
 ) -> SeatAllocationRead:

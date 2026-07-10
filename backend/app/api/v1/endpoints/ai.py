@@ -115,9 +115,15 @@ async def _find_employee(db: DbSession, query: str, email: str | None) -> Employ
     if email:
         statement = statement.where(func.lower(Employee.email) == email.lower())
     else:
+        code_match = re.search(r"\b[A-Za-z]+[-_]?\d+\b", query)
+        if code_match:
+            code_pattern = f"%{code_match.group(0)}%"
+            statement = statement.where(Employee.employee_code.ilike(code_pattern))
+            return (await db.execute(statement.limit(1))).scalar_one_or_none()
+
         tokens = [
             token
-            for token in re.findall(r"[A-Za-z]+", query)
+            for token in re.findall(r"[A-Za-z0-9._-]+", query)
             if token.lower()
             not in {
                 "where",

@@ -4,6 +4,7 @@ from typing import Sequence, Union
 
 import sqlalchemy as sa
 from alembic import op
+from sqlalchemy.dialects.postgresql import ENUM
 
 revision: str = "001_initial_schema"
 down_revision: Union[str, None] = None
@@ -38,16 +39,27 @@ EXECUTE FUNCTION prevent_reserved_seat_allocation();
 
 
 def upgrade() -> None:
-    project_status = sa.Enum("active", "inactive", "completed", name="project_status")
-    seat_status = sa.Enum(
+    project_status = ENUM(
+        "active",
+        "inactive",
+        "completed",
+        name="project_status",
+        create_type=False,
+    )
+    seat_status = ENUM(
         "available",
         "occupied",
         "reserved",
         "maintenance",
         name="seat_status",
+        create_type=False,
     )
-    allocation_status = sa.Enum(
-        "active", "released", "cancelled", name="allocation_status"
+    allocation_status = ENUM(
+        "active",
+        "released",
+        "cancelled",
+        name="allocation_status",
+        create_type=False,
     )
 
     project_status.create(op.get_bind(), checkfirst=True)

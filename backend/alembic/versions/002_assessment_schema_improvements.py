@@ -4,18 +4,20 @@ from typing import Sequence, Union
 
 import sqlalchemy as sa
 from alembic import op
+from sqlalchemy.dialects.postgresql import ENUM
 
-revision: str = "002_assessment_schema_improvements"
+revision: str = "002_assessment_schema"
 down_revision: Union[str, None] = "001_initial_schema"
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
-employment_status_enum = sa.Enum(
+employment_status_enum = ENUM(
     "active",
     "inactive",
     "onboarding",
     "resigned",
     name="employment_status",
+    create_type=False,
 )
 
 
