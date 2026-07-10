@@ -34,23 +34,23 @@ The project follows modern software engineering practices with a clean architect
 
 **Vercel**
 
-> https://YOUR-VERCEL-URL.vercel.app
+> https://ethara-seat-allocation-project-mapp-zeta.vercel.app
 
 ### Backend
 
 **Render**
 
-> https://YOUR-RENDER-URL.onrender.com
+> https://ethara-seat-allocation-project-mapping-uduk.onrender.com/
 
 ### API Documentation
 
 Swagger UI
 
-> https://YOUR-RENDER-URL.onrender.com/docs
+> https://ethara-seat-allocation-project-mapping-uduk.onrender.com/docs#/
 
 ### Health Check
 
-> https://YOUR-RENDER-URL.onrender.com/health
+> https://ethara-seat-allocation-project-mapping-uduk.onrender.com/health
 
 ---
 
