@@ -22,7 +22,17 @@ def create_app() -> FastAPI:
         openapi_url=settings.openapi_url,
         debug=settings.debug,
     )
-
+    @app.get("/", tags=["Root"])
+    async def root():
+        return {
+            "application": "Ethara Seat Allocation & Project Mapping System",
+            "status": "running",
+            "version": settings.app_version,
+            "docs": "/docs",
+            "health": "/health",
+            "openapi": "/openapi.json"
+        }
+    
     app.add_middleware(
         CORSMiddleware,
         allow_origins=settings.cors_origins_list,
