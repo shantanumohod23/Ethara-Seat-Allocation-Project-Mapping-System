@@ -1,5 +1,3 @@
-# AI_PROMPTS.md
-
 # AI Usage Report
 
 ## Project
