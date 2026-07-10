@@ -182,10 +182,10 @@ Database
                       ▼
                 FastAPI Backend
                       │
-             SQLAlchemy ORM
+                SQLAlchemy ORM
                       │
                       ▼
-             PostgreSQL (Neon)
+                PostgreSQL (Neon)
 ```
 
 ---
